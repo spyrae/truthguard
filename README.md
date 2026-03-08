@@ -1,8 +1,13 @@
 # TruthGuard
 
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/spyrae/truthguard)
+[![License](https://img.shields.io/badge/license-BUSL--1.1-green)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-ready-blueviolet)](https://claude.ai/code)
+[![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-ready-orange)](https://github.com/google-gemini/gemini-cli)
+
 **Catches false claims from AI coding agents.** Verifies that actions were actually performed — not just claimed.
 
-<!-- TODO: Add demo GIF here -->
+<!-- TODO: Replace with recorded demo GIF after dogfooding -->
 <!-- ![TruthGuard Demo](docs/demo.gif) -->
 
 ## The Problem
