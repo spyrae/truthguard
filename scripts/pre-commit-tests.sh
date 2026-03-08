@@ -80,6 +80,7 @@ TEST_EXIT=${TEST_EXIT:-0}
 
 if [ "$TEST_EXIT" != "0" ]; then
   # Tests failed — block the commit
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) commit-blocked exit=$TEST_EXIT $TEST_CMD" >> /tmp/truthguard-session.log
   TAIL_OUTPUT=$(echo "$TEST_OUTPUT" | tail -20)
   REASON="Tests failed (exit code ${TEST_EXIT}). Fix the failures before committing. Test command: ${TEST_CMD}"
   jq -n \

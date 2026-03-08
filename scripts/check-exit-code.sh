@@ -5,6 +5,8 @@
 
 set -euo pipefail
 
+LOG="/tmp/truthguard-session.log"
+
 # Read all input once into a variable
 INPUT=$(cat)
 
@@ -53,6 +55,7 @@ TAIL_OUTPUT=$(echo "$COMBINED_OUTPUT" | tail -15)
 # --- Build/compile failure detection: BLOCK (check before test patterns) ---
 BUILD_FAIL_PATTERNS="BUILD FAILED|build failed|compilation error|compile error|SyntaxError|cannot find module|Module not found"
 if echo "$COMBINED_OUTPUT" | grep -qiE "$BUILD_FAIL_PATTERNS"; then
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) build-fail exit=$EXIT_CODE $COMMAND" >> "$LOG"
   REASON="Command exited with code ${EXIT_CODE}. Build/compilation failures detected. Fix the errors before proceeding."
   MSG="🛑 TruthGuard: Build failure detected (exit code ${EXIT_CODE})."
   jq -n \
@@ -66,6 +69,7 @@ fi
 # --- Test failure detection: BLOCK ---
 TEST_FAIL_PATTERNS="test.*FAILED|FAIL:|failures?:|errors? found|test.*failed|AssertionError|assert.*failed|FAILURES!|Tests:.*failed|failing test|pytest.*error"
 if echo "$COMBINED_OUTPUT" | grep -qiE "$TEST_FAIL_PATTERNS"; then
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) test-fail exit=$EXIT_CODE $COMMAND" >> "$LOG"
   REASON="Command exited with code ${EXIT_CODE}. Test failures detected in output. You MUST acknowledge these failures and fix them before proceeding. Do NOT claim tests passed."
   MSG="🛑 TruthGuard: Test failures detected (exit code ${EXIT_CODE}). Agent must fix before continuing."
   jq -n \
@@ -77,6 +81,7 @@ if echo "$COMBINED_OUTPUT" | grep -qiE "$TEST_FAIL_PATTERNS"; then
 fi
 
 # --- Generic non-zero exit code: BLOCK with softer message ---
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) exit-code exit=$EXIT_CODE $COMMAND" >> "$LOG"
 REASON="Command exited with code ${EXIT_CODE}. Review the output and acknowledge the actual result before proceeding."
 MSG="⚠️ TruthGuard: Command exited with code ${EXIT_CODE}. Verify the actual result before claiming success."
 jq -n \

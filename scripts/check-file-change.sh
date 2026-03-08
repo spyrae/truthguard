@@ -35,6 +35,7 @@ NEW_CHECKSUM=$(sha256sum "$FILE_PATH" 2>/dev/null | cut -d' ' -f1 || shasum -a 2
 rm -f "$CHECKSUM_FILE"
 
 if [ "$OLD_CHECKSUM" = "$NEW_CHECKSUM" ]; then
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) phantom-edit $FILE_PATH" >> /tmp/truthguard-session.log
   BASENAME=$(basename "$FILE_PATH")
   REASON="File '${BASENAME}' was not actually modified — checksum is identical before and after the operation. If you intended to change this file, review your edit. Do NOT claim the file was updated."
   MSG="⚠️ TruthGuard: File '${BASENAME}' was not actually modified. Checksum unchanged."
