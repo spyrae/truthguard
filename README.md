@@ -25,21 +25,14 @@ TruthGuard installs as a set of hooks that intercept tool calls in real-time:
 | **Exit Code Verifier** | Command failed (exit code ≠ 0) but agent claims success |
 | **File Change Detector** | Agent claims file was edited, but checksum is unchanged |
 | **Dangerous Command Blocker** | `--no-verify`, `--force push`, `rm -rf /`, `reset --hard` |
-| **Test Runner** | Auto-detects project type and runs real tests |
-
-```
-PreToolUse (Bash)     → block dangerous commands before execution
-PreToolUse (Write/Edit) → record file checksum before change
-PostToolUse (Bash)    → verify exit code, catch test failures
-PostToolUse (Write/Edit) → compare checksums, detect phantom edits
-```
+| **Pre-Commit Test Runner** | Auto-detects project type and runs tests before every commit |
 
 ## Supported Agents
 
 | Agent | Status | Integration |
 |-------|--------|-------------|
-| Claude Code | ✅ Ready | Native hooks |
-| Gemini CLI | 🔜 Planned | MCP server |
+| Claude Code | ✅ Ready | Native hooks via `.claude/settings.json` |
+| Gemini CLI | ✅ Ready | Native extension via `gemini extensions install` |
 
 ## Quick Start
 
@@ -57,7 +50,10 @@ git clone https://github.com/spyrae/truthguard.git ~/.truthguard
     "PreToolUse": [
       {
         "matcher": "Bash",
-        "hooks": [{ "type": "command", "command": "~/.truthguard/scripts/block-dangerous.sh" }]
+        "hooks": [
+          { "type": "command", "command": "~/.truthguard/scripts/block-dangerous.sh" },
+          { "type": "command", "command": "~/.truthguard/scripts/pre-commit-tests.sh", "timeout": 120 }
+        ]
       },
       {
         "matcher": "Write|Edit",
@@ -80,12 +76,32 @@ git clone https://github.com/spyrae/truthguard.git ~/.truthguard
 
 3. Done. TruthGuard now monitors every tool call.
 
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/spyrae/truthguard
+```
+
+That's it. TruthGuard hooks are loaded automatically via the extension system.
+
 ### Slash Commands
 
-TruthGuard includes two built-in commands:
+TruthGuard includes two built-in commands (Claude Code):
 
 - `/verify` — Run real tests, type checks, and linting for the current project
 - `/truthguard-status` — Show session statistics (blocked commands, warnings)
+
+### Configuration
+
+Create `.truthguard.yml` in your project root to customize:
+
+```yaml
+# Override auto-detected test command
+test_command: "npm run test:unit"
+
+# Block commit if no tests found (default: true = allow)
+skip_on_no_tests: false
+```
 
 ## What You'll See
 
@@ -96,11 +112,15 @@ When TruthGuard catches something:
 ```
 
 ```
-⚠️ TruthGuard: Command exited with code 1 and output contains test failures. Do NOT claim tests passed.
+🛑 TruthGuard: Test failures detected (exit code 1). Agent must fix before continuing.
 ```
 
 ```
 ⚠️ TruthGuard: File 'utils.dart' was not actually modified. Checksum unchanged.
+```
+
+```
+🛑 TruthGuard: Build failure detected (exit code 1).
 ```
 
 ## Project Structure
@@ -108,21 +128,36 @@ When TruthGuard catches something:
 ```
 truthguard/
 ├── .claude-plugin/
-│   └── plugin.json        # Plugin manifest
+│   └── plugin.json           # Claude Code plugin manifest
+├── gemini-extension.json     # Gemini CLI extension manifest
+├── GEMINI.md                 # Context injected into Gemini CLI
 ├── hooks/
-│   └── hooks.json         # Hook configuration
+│   ├── hooks.json            # Claude Code hook configuration
+│   └── gemini.json           # Gemini CLI hook configuration
 ├── scripts/
-│   ├── block-dangerous.sh # PreToolUse: block risky commands
-│   ├── pre-file-change.sh # PreToolUse: record file checksums
-│   ├── check-exit-code.sh # PostToolUse: verify command results
-│   ├── check-file-change.sh # PostToolUse: detect phantom edits
-│   └── run-tests.sh       # Auto-detect and run project tests
+│   ├── block-dangerous.sh    # Block risky git commands
+│   ├── pre-commit-tests.sh   # Run tests before git commit
+│   ├── pre-file-change.sh    # Record file checksums
+│   ├── check-exit-code.sh    # Verify command exit codes
+│   ├── check-file-change.sh  # Detect phantom edits
+│   └── run-tests.sh          # Auto-detect and run project tests
 ├── skills/
-│   ├── verify/SKILL.md    # /verify slash command
-│   └── status/SKILL.md    # /truthguard-status slash command
-├── LICENSE                 # BSL-1.1 (converts to MIT in 2030)
+│   ├── verify/SKILL.md       # /verify slash command
+│   └── status/SKILL.md       # /truthguard-status slash command
+├── LICENSE                    # BSL-1.1 (converts to MIT in 2030)
 └── README.md
 ```
+
+## How Hooks Map Between Agents
+
+| Claude Code | Gemini CLI | Script |
+|-------------|------------|--------|
+| PreToolUse → Bash | BeforeTool → run_shell_command | `block-dangerous.sh`, `pre-commit-tests.sh` |
+| PreToolUse → Write\|Edit | BeforeTool → write_file\|replace | `pre-file-change.sh` |
+| PostToolUse → Bash | AfterTool → run_shell_command | `check-exit-code.sh` |
+| PostToolUse → Write\|Edit | AfterTool → write_file\|replace | `check-file-change.sh` |
+
+The scripts are agent-agnostic — they read JSON from stdin and output JSON to stdout. The hook configuration files handle the mapping.
 
 ## License
 

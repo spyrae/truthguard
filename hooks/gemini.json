@@ -1,0 +1,54 @@
+{
+  "description": "TruthGuard hooks for Gemini CLI — catches false claims from AI coding agents",
+  "hooks": {
+    "BeforeTool": [
+      {
+        "matcher": "run_shell_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/block-dangerous.sh",
+            "description": "TruthGuard: block dangerous commands"
+          },
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/pre-commit-tests.sh",
+            "description": "TruthGuard: run tests before commit"
+          }
+        ]
+      },
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/pre-file-change.sh",
+            "description": "TruthGuard: record file state before change"
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "run_shell_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/check-exit-code.sh",
+            "description": "TruthGuard: verify command result"
+          }
+        ]
+      },
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/check-file-change.sh",
+            "description": "TruthGuard: verify file change"
+          }
+        ]
+      }
+    ]
+  }
+}
