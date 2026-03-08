@@ -10,6 +10,12 @@
             "command": "${CLAUDE_PLUGIN_ROOT}/scripts/block-dangerous.sh",
             "timeout": 5,
             "statusMessage": "TruthGuard: checking command safety..."
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-commit-tests.sh",
+            "timeout": 120,
+            "statusMessage": "TruthGuard: running tests before commit..."
           }
         ]
       },
