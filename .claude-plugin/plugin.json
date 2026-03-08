@@ -1,0 +1,12 @@
+{
+  "name": "truthguard",
+  "description": "Catches false claims from AI coding agents. Verifies that actions were actually performed.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Roman Belov",
+    "email": "roman@journeybay.co"
+  },
+  "repository": "https://github.com/spyrae/truthguard",
+  "license": "BSL-1.1",
+  "keywords": ["verification", "honesty", "testing", "hooks", "safety"]
+}

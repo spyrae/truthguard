@@ -1,0 +1,53 @@
+{
+  "description": "TruthGuard — catches false claims from AI coding agents",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/block-dangerous.sh",
+            "timeout": 5,
+            "statusMessage": "TruthGuard: checking command safety..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-file-change.sh",
+            "timeout": 5,
+            "statusMessage": "TruthGuard: recording file state..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/check-exit-code.sh",
+            "timeout": 10,
+            "statusMessage": "TruthGuard: verifying command result..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/check-file-change.sh",
+            "timeout": 5,
+            "statusMessage": "TruthGuard: verifying file change..."
+          }
+        ]
+      }
+    ]
+  }
+}
