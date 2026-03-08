@@ -8,11 +8,11 @@ Show the current TruthGuard session status by reading the session log.
 
 ## Steps
 
-1. Read the session log file at `/tmp/truthguard-session.log`. If it doesn't exist, report "No events recorded this session."
+1. Read the session log file at `~/.truthguard/session.log`. If it doesn't exist, report "No events recorded this session."
 
 2. Count events by type:
 ```bash
-LOG="/tmp/truthguard-session.log"
+LOG="~/.truthguard/session.log"
 if [ -f "$LOG" ]; then
   BLOCKED=$(grep -c "blocked" "$LOG" 2>/dev/null || echo 0)
   FILE_ALERTS=$(grep -c "phantom-edit" "$LOG" 2>/dev/null || echo 0)

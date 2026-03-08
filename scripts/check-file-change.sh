@@ -18,7 +18,7 @@ if [ ! -f "$FILE_PATH" ]; then
   exit 0
 fi
 
-CHECKSUM_DIR="/tmp/truthguard-checksums"
+CHECKSUM_DIR="${TRUTHGUARD_CHECKSUMS:-$HOME/.truthguard/checksums}"
 ENCODED_PATH=$(echo "$FILE_PATH" | md5sum | cut -d' ' -f1 2>/dev/null || md5 -q -s "$FILE_PATH")
 CHECKSUM_FILE="$CHECKSUM_DIR/$ENCODED_PATH"
 
@@ -35,7 +35,7 @@ NEW_CHECKSUM=$(sha256sum "$FILE_PATH" 2>/dev/null | cut -d' ' -f1 || shasum -a 2
 rm -f "$CHECKSUM_FILE"
 
 if [ "$OLD_CHECKSUM" = "$NEW_CHECKSUM" ]; then
-  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) phantom-edit $FILE_PATH" >> /tmp/truthguard-session.log
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) phantom-edit $FILE_PATH" >> "${TRUTHGUARD_LOG:-$HOME/.truthguard/session.log}"
   BASENAME=$(basename "$FILE_PATH")
   REASON="File '${BASENAME}' was not actually modified — checksum is identical before and after the operation. If you intended to change this file, review your edit. Do NOT claim the file was updated."
   MSG="⚠️ TruthGuard: File '${BASENAME}' was not actually modified. Checksum unchanged."

@@ -12,7 +12,7 @@ if [ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ]; then
 fi
 
 # Create temp dir for checksums
-CHECKSUM_DIR="/tmp/truthguard-checksums"
+CHECKSUM_DIR="${TRUTHGUARD_CHECKSUMS:-$HOME/.truthguard/checksums}"
 mkdir -p "$CHECKSUM_DIR"
 
 # Store checksum with encoded path as filename

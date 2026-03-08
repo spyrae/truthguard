@@ -8,7 +8,7 @@ set -euo pipefail
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
 
-LOG="/tmp/truthguard-session.log"
+LOG="${TRUTHGUARD_LOG:-$HOME/.truthguard/session.log}"
 
 deny() {
   echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) blocked $COMMAND" >> "$LOG"

@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-LOG="/tmp/truthguard-session.log"
+LOG="${TRUTHGUARD_LOG:-$HOME/.truthguard/session.log}"
 
 # Read all input once into a variable
 INPUT=$(cat)
