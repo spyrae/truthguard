@@ -2,6 +2,7 @@ class Truthguard < Formula
   desc "Catches false claims from AI coding agents"
   homepage "https://github.com/spyrae/truthguard"
   url "https://github.com/spyrae/truthguard/archive/refs/tags/v0.1.0.tar.gz"
+  sha256 "cf10be4bd3651c17eda03669e25e06283ebe1c8f0ddc60fb8bdd54f29ece1516"
   license "BUSL-1.1"
 
   depends_on "jq"
