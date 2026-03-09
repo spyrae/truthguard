@@ -6,7 +6,7 @@
   "author": "Roman Belov",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spyrae/truthguard.git"
+    "url": "git+https://github.com/spyrae/truthguard.git"
   },
   "homepage": "https://github.com/spyrae/truthguard",
   "keywords": [
@@ -22,7 +22,7 @@
     "agent"
   ],
   "bin": {
-    "truthguard": "./bin/truthguard.js"
+    "truthguard": "bin/truthguard.js"
   },
   "files": [
     "bin/",
