@@ -1,11 +1,21 @@
 # TruthGuard
 
 [![npm](https://img.shields.io/npm/v/truthguard)](https://www.npmjs.com/package/truthguard)
+[![npm downloads](https://img.shields.io/npm/dm/truthguard)](https://www.npmjs.com/package/truthguard)
+[![Homebrew](https://img.shields.io/badge/homebrew-spyrae%2Ftruthguard-FBB040?logo=homebrew)](https://github.com/spyrae/homebrew-truthguard)
 [![License](https://img.shields.io/badge/license-BUSL--1.1-green)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-hooks-blueviolet)](https://docs.anthropic.com/en/docs/claude-code)
 [![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-extension-orange)](https://github.com/google-gemini/gemini-cli)
 
 **Catches false claims from AI coding agents.** Verifies that actions were actually performed - not just claimed.
+
+### Install in 30 seconds
+
+```bash
+npx truthguard install && npx truthguard init
+```
+
+Or via Homebrew: `brew tap spyrae/truthguard && brew install truthguard`
 
 ![TruthGuard Demo](docs/demo.gif)
 
