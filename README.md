@@ -1,6 +1,6 @@
 # TruthGuard
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/spyrae/truthguard)
+[![npm](https://img.shields.io/npm/v/truthguard)](https://www.npmjs.com/package/truthguard)
 [![License](https://img.shields.io/badge/license-BUSL--1.1-green)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-hooks-blueviolet)](https://docs.anthropic.com/en/docs/claude-code)
 [![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-extension-orange)](https://github.com/google-gemini/gemini-cli)
@@ -51,7 +51,27 @@ Pre-commit hook auto-detects: **Flutter** / **Node.js** (npm test) / **Python** 
 
 ## Quick Start
 
-### Claude Code
+### Option A: npm (recommended)
+
+```bash
+npx truthguard install    # Install scripts to ~/.truthguard
+cd your-project
+npx truthguard init       # Add hooks to .claude/settings.json
+```
+
+Restart Claude Code. Done.
+
+### Option B: Homebrew (macOS)
+
+```bash
+brew tap spyrae/truthguard
+brew install truthguard
+truthguard-install        # Set up ~/.truthguard
+```
+
+Then add hooks to your project manually (see Option C).
+
+### Option C: Git clone (manual)
 
 **1. Clone:**
 
@@ -174,6 +194,8 @@ skip_on_no_tests: false
 
 ```
 truthguard/
+├── bin/
+│   └── truthguard.js           # CLI: npx truthguard init/install/status
 ├── scripts/
 │   ├── block-dangerous.sh      # PreToolUse: block risky git commands
 │   ├── pre-commit-tests.sh     # PreToolUse: run tests before commit
@@ -188,11 +210,14 @@ truthguard/
 ├── skills/
 │   ├── verify/SKILL.md         # /verify slash command
 │   └── status/SKILL.md         # /truthguard-status slash command
+├── homebrew/
+│   └── truthguard.rb           # Homebrew formula
 ├── .claude-plugin/
 │   └── plugin.json             # Claude Code plugin manifest
 ├── gemini-extension.json       # Gemini CLI extension manifest
 ├── GEMINI.md                   # Context injected into Gemini sessions
 ├── .truthguard.yml.example     # Example configuration
+├── package.json                # npm package config
 ├── LICENSE                     # BUSL-1.1 (converts to MIT 2030-03-08)
 └── README.md
 ```

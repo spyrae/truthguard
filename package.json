@@ -1,0 +1,42 @@
+{
+  "name": "truthguard",
+  "version": "0.1.0",
+  "description": "Catches false claims from AI coding agents. Verifies actions were actually performed.",
+  "license": "BUSL-1.1",
+  "author": "Roman Belov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spyrae/truthguard.git"
+  },
+  "homepage": "https://github.com/spyrae/truthguard",
+  "keywords": [
+    "ai",
+    "claude",
+    "claude-code",
+    "gemini",
+    "verification",
+    "hooks",
+    "testing",
+    "safety",
+    "llm",
+    "agent"
+  ],
+  "bin": {
+    "truthguard": "./bin/truthguard.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "hooks/",
+    "skills/",
+    ".claude-plugin/",
+    "gemini-extension.json",
+    "GEMINI.md",
+    ".truthguard.yml.example",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}
