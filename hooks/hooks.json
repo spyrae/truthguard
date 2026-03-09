@@ -40,6 +40,12 @@
             "command": "${CLAUDE_PLUGIN_ROOT}/scripts/check-exit-code.sh",
             "timeout": 10,
             "statusMessage": "TruthGuard: verifying command result..."
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/post-commit-remind.sh",
+            "timeout": 5,
+            "statusMessage": "TruthGuard: verification reminder..."
           }
         ]
       },
