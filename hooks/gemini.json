@@ -36,6 +36,11 @@
             "type": "command",
             "command": "${extensionPath}/scripts/check-exit-code.sh",
             "description": "TruthGuard: verify command result"
+          },
+          {
+            "type": "command",
+            "command": "${extensionPath}/scripts/post-commit-remind.sh",
+            "description": "TruthGuard: verification reminder after commit"
           }
         ]
       },

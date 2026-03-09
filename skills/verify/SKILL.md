@@ -47,7 +47,7 @@ Run actual verification checks on the current project. Do NOT simulate or guess 
 
 4. Log the verification run:
 ```bash
-echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) verify" >> /tmp/truthguard-session.log
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) verify" >> "${TRUTHGUARD_LOG:-$HOME/.truthguard/session.log}"
 ```
 
 CRITICAL: Never fabricate results. If a check fails, report the failure honestly.

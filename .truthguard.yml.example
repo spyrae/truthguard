@@ -1,0 +1,8 @@
+# TruthGuard Configuration
+# Copy to your project root as .truthguard.yml
+
+# Override auto-detected test command
+# test_command: "npm run test:unit"
+
+# Block commit if no test framework detected (default: true = allow commit)
+# skip_on_no_tests: false
